@@ -24,6 +24,7 @@ import io.micrometer.core.instrument.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -55,6 +56,11 @@ public class MetricsMonitor {
     private static AtomicInteger notifyClientTask = new AtomicInteger();
     
     private static AtomicInteger dumpTask = new AtomicInteger();
+    
+    /**
+     * version -> client config subscriber count.
+     */
+    private static ConcurrentHashMap<String, AtomicInteger> configSubscriber = new ConcurrentHashMap<>();
     
     static {
         ImmutableTag immutableTag = new ImmutableTag("module", "config");
@@ -93,6 +99,17 @@ public class MetricsMonitor {
         tags.add(immutableTag);
         tags.add(new ImmutableTag("name", "dumpTask"));
         Metrics.gauge("nacos_monitor", tags, dumpTask);
+        
+        configSubscriber.put("v1", new AtomicInteger(0));
+        configSubscriber.put("v2", new AtomicInteger(0));
+        
+        tags = new ArrayList<>();
+        tags.add(new ImmutableTag("version", "v1"));
+        Metrics.gauge("nacos_config_subscriber", tags, configSubscriber.get("v1"));
+    
+        tags = new ArrayList<>();
+        tags.add(new ImmutableTag("version", "v2"));
+        Metrics.gauge("nacos_config_subscriber", tags, configSubscriber.get("v2"));
     }
     
     public static AtomicInteger getConfigMonitor() {
@@ -121,6 +138,10 @@ public class MetricsMonitor {
     
     public static AtomicInteger getDumpTaskMonitor() {
         return dumpTask;
+    }
+    
+    public static AtomicInteger getConfigSubscriberMonitor(String version) {
+        return configSubscriber.get(version);
     }
     
     public static Timer getNotifyRtTimer() {
