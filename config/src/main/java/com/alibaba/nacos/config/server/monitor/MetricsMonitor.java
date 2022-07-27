@@ -39,14 +39,14 @@ public class MetricsMonitor {
     private static AtomicInteger publish = new AtomicInteger();
     
     /**
-     * task for notify config change to sub client of http long polling..
+     * task for notify config change to sub client of http long polling.
      */
     private static AtomicInteger longPolling = new AtomicInteger();
     
     private static AtomicInteger configCount = new AtomicInteger();
     
     /**
-     * task for ntify config change to cluster server.
+     * task for notify config change to cluster server.
      */
     private static AtomicInteger notifyTask = new AtomicInteger();
     
@@ -56,6 +56,11 @@ public class MetricsMonitor {
     private static AtomicInteger notifyClientTask = new AtomicInteger();
     
     private static AtomicInteger dumpTask = new AtomicInteger();
+    
+    /**
+     * config fuzzy search count.
+     */
+    private static AtomicInteger fuzzySearch = new AtomicInteger();
     
     /**
      * version -> client config subscriber count.
@@ -99,6 +104,11 @@ public class MetricsMonitor {
         tags.add(immutableTag);
         tags.add(new ImmutableTag("name", "dumpTask"));
         Metrics.gauge("nacos_monitor", tags, dumpTask);
+    
+        tags = new ArrayList<>();
+        tags.add(immutableTag);
+        tags.add(new ImmutableTag("name", "fuzzySearch"));
+        Metrics.gauge("nacos_monitor", tags, fuzzySearch);
         
         configSubscriber.put("v1", new AtomicInteger(0));
         configSubscriber.put("v2", new AtomicInteger(0));
@@ -138,6 +148,10 @@ public class MetricsMonitor {
     
     public static AtomicInteger getDumpTaskMonitor() {
         return dumpTask;
+    }
+    
+    public static AtomicInteger getFuzzySearchMonitor() {
+        return fuzzySearch;
     }
     
     public static AtomicInteger getConfigSubscriberMonitor(String version) {
