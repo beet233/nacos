@@ -158,6 +158,22 @@ public class MetricsMonitor {
         return configSubscriber.get(version);
     }
     
+    public static Timer getReadConfigRtTimer() {
+        return Metrics.timer("nacos_timer", "module", "config", "name", "readConfigRt");
+    }
+    
+    public static Timer getReadConfigRpcRtTimer() {
+        return Metrics.timer("nacos_timer", "module", "config", "name", "readConfigRpcRt");
+    }
+    
+    public static Timer getWriteConfigRtTimer() {
+        return Metrics.timer("nacos_timer", "module", "config", "name", "writeConfigRt");
+    }
+    
+    public static Timer getWriteConfigRpcRtTimer() {
+        return Metrics.timer("nacos_timer", "module", "config", "name", "writeConfigRpcRt");
+    }
+    
     public static Timer getNotifyRtTimer() {
         return Metrics.timer("nacos_timer", "module", "config", "name", "notifyRt");
     }
