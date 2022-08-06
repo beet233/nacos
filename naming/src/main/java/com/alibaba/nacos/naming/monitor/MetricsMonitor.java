@@ -64,6 +64,10 @@ public class MetricsMonitor {
     
     private final AtomicInteger failedPush = new AtomicInteger();
     
+    private final AtomicInteger serviceSubscribedEventQueueSize = new AtomicInteger();
+    
+    private final AtomicInteger serviceChangedEventQueueSize = new AtomicInteger();
+    
     /**
      * version -> naming subscriber count.
      */
@@ -162,6 +166,14 @@ public class MetricsMonitor {
     
     public static AtomicInteger getTotalPushCountForAvg() {
         return INSTANCE.totalPushCountForAvg;
+    }
+    
+    public static AtomicInteger getServiceSubscribedEventQueueSize() {
+        return INSTANCE.serviceSubscribedEventQueueSize;
+    }
+    
+    public static AtomicInteger getServiceChangedEventQueueSize() {
+        return INSTANCE.serviceChangedEventQueueSize;
     }
     
     public static AtomicLong getTotalPushCostForAvg() {
